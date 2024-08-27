@@ -1,5 +1,7 @@
 package com.klodnicki.watermeter.ui;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -38,5 +40,18 @@ public class MainActivity extends AppCompatActivity {
         logoutButton = findViewById(R.id.logoutButton);
         fetchPermissionsButton = findViewById(R.id.fetchPermissionsButton);
 
+        logoutButton.setOnClickListener(v -> performLogout());
+    }
 
+    private void performLogout () {
+        //here I keep small amount of data (token authentication data)
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        //and then I remove it using Editor
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("Token");
+        editor.apply();
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }
