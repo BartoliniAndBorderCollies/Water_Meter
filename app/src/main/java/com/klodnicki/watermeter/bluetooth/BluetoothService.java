@@ -50,13 +50,21 @@ public class BluetoothService {
         }
     }
 
+    // Send data with checksum calculation
     public void sendData(String data, Context context) throws IOException {
         if (!hasBluetoothPermissions(context)) {
             throw new SecurityException("Bluetooth permissions are not granted");
         }
 
+        // Calculate checksum for the data
+        String checksum = ChecksumUtil.calculateChecksum(data);
+
+        // Optionally, append the checksum to the data
+        String dataWithChecksum = data + checksum;
+
         if (outputStream != null) {
-            outputStream.write(data.getBytes());
+            outputStream.write(dataWithChecksum.getBytes());
+            Log.d(TAG, "Data sent: " + dataWithChecksum);
         } else {
             throw new IOException("Bluetooth output stream is not available");
         }
