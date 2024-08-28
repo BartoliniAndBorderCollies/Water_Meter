@@ -9,7 +9,4 @@ public class PermissionsResponse {
         return groups;
     }
 
-    public void setGroups(Map<String, Group> groups) {
-        this.groups = groups;
-    }
 }
