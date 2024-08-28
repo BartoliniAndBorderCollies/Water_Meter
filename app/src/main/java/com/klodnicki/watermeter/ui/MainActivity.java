@@ -1,7 +1,6 @@
 package com.klodnicki.watermeter.ui;
 
 import android.Manifest;
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -19,11 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.klodnicki.watermeter.R;
 import com.klodnicki.watermeter.api.ApiClient;
 import com.klodnicki.watermeter.api.ApiService;
-import com.klodnicki.watermeter.bluetooth.BluetoothService;
 import com.klodnicki.watermeter.command.CommandAdapter;
 import com.klodnicki.watermeter.model.PermissionsResponse;
 
-import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,15 +34,11 @@ public class MainActivity extends AppCompatActivity {
     private CommandAdapter commandAdapter;
     private Button logoutButton;
     private Button fetchPermissionsButton;
-    private BluetoothService bluetoothService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Initialize BluetoothService
-        bluetoothService = new BluetoothService();
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -58,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(v -> performLogout());
         fetchPermissionsButton.setOnClickListener(v -> fetchPermissions());
 
-        // Check for Bluetooth and Location permissions
         if (arePermissionsGranted()) {
             fetchPermissions();
         } else {
@@ -86,14 +78,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void fetchPermissions() {
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        String token = sharedPreferences.getString("Token", null);
+        String token = sharedPreferences.getString("auth_token", null);
 
         if (token == null) {
             Toast.makeText(this, "No token found, please login again", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Log.d("MainActivity", "Using token: " + token); // I check if token is correct
+        Log.d("MainActivity", "Using token: " + token);
 
         ApiService apiService = ApiClient.getApiService();
         Call<PermissionsResponse> call = apiService.getPermissions("Bearer " + token);
@@ -118,32 +110,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handlePermissions(PermissionsResponse permissionsResponse) {
-        // Process permissionsResponse and update UI
         commandAdapter.setGroups(permissionsResponse.getGroups());
     }
 
     private void performLogout () {
-        //here I keep small amount of data (token authentication data)
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        //and then I remove it using Editor
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove("Token");
+        editor.remove("auth_token");
         editor.apply();
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
-
-    // Example method to connect and send data
-    private void exampleBluetoothOperation(BluetoothDevice device) {
-        try {
-            String deviceAddress = device.getAddress(); // Get the MAC address from the BluetoothDevice object
-            bluetoothService.connect(deviceAddress, this); // Pass the MAC address instead of the BluetoothDevice object
-            bluetoothService.sendData("Hello", this); // Pass context
-        } catch (IOException e) {
-            Log.e("BluetoothService", "Bluetooth operation failed", e);
-            Toast.makeText(this, "Bluetooth operation failed", Toast.LENGTH_SHORT).show();
-        }
-    }
-
 }

@@ -6,9 +6,9 @@ public class Parameter {
     private String label;
     private boolean required;
     private String value;
-    private Integer min;   // for int type
-    private Integer max;   // for int type
-    private String regexp; // for validation
+    private Integer min;
+    private Integer max;
+    private String regexp;
     
     public String getName() {
         return name;
