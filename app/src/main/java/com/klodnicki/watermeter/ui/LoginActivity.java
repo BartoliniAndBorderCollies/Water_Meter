@@ -76,4 +76,9 @@ public class LoginActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    private void navigateToNextScreen() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }
