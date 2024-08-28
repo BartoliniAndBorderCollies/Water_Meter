@@ -54,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     String token = response.body().getToken();
+                    Log.d("LoginActivity", "Token received: " + token);
                     saveToken(token);
                     navigateToNextScreen();
                 } else {

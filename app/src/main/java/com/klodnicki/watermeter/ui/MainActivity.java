@@ -93,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        Log.d("MainActivity", "Using token: " + token); // I check if token is correct
+
         ApiService apiService = ApiClient.getApiService();
         Call<PermissionsResponse> call = apiService.getPermissions("Bearer " + token);
 
@@ -102,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     handlePermissions(response.body());
                 } else {
+                    Log.e("MainActivity", "Failed to fetch permissions. Response code: " + response.code());
                     Toast.makeText(MainActivity.this, "Failed to fetch permissions", Toast.LENGTH_SHORT).show();
                 }
             }
