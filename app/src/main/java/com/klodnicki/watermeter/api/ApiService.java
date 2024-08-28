@@ -17,5 +17,5 @@ public interface ApiService {
     Call<LoginResponse> login(@Field("u") String username, @Field("p") String password);
 
     @GET("waterPermissions")
-    Call<PermissionsResponse> getPermissions(@Header("Authorization") String token);
+    Call<PermissionsResponse> getPermissions(@Header("Token") String token);
 }
