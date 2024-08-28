@@ -88,6 +88,17 @@ public class BluetoothService {
     public void close() throws IOException {
         if (bluetoothSocket != null) {
             bluetoothSocket.close();
+            Log.d(TAG, "Bluetooth connection closed.");
+        }
+    }
+
+    // Check if Bluetooth permissions are granted
+    private boolean hasBluetoothPermissions(Context context) {  // ADDED
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return context.checkSelfPermission(android.Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED &&
+                    context.checkSelfPermission(android.Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED;
+        } else {
+            return true;
         }
     }
 
