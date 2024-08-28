@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainActivity", "Using token: " + token);
 
         ApiService apiService = ApiClient.getApiService();
-        Call<PermissionsResponse> call = apiService.getPermissions("Bearer " + token);
+        Call<PermissionsResponse> call = apiService.getPermissions(token);
 
         call.enqueue(new Callback<PermissionsResponse>() {
             @Override
