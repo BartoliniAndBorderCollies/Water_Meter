@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
         });
     }
+
     private void saveToken(String token) {
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
