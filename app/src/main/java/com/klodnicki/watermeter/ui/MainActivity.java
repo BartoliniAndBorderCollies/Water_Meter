@@ -134,11 +134,13 @@ public class MainActivity extends AppCompatActivity {
     // Example method to connect and send data
     private void exampleBluetoothOperation(BluetoothDevice device) {
         try {
-            bluetoothService.connect(device, this); // Pass context
+            String deviceAddress = device.getAddress(); // Get the MAC address from the BluetoothDevice object
+            bluetoothService.connect(deviceAddress, this); // Pass the MAC address instead of the BluetoothDevice object
             bluetoothService.sendData("Hello", this); // Pass context
         } catch (IOException e) {
             Log.e("BluetoothService", "Bluetooth operation failed", e);
             Toast.makeText(this, "Bluetooth operation failed", Toast.LENGTH_SHORT).show();
         }
     }
+
 }
