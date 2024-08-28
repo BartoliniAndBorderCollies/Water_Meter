@@ -70,6 +70,21 @@ public class BluetoothService {
         }
     }
 
+    // Receive data from Bluetooth device
+    public String receiveData() throws IOException {
+        byte[] buffer = new byte[1024];
+        int bytes;
+        if (inputStream != null) {
+            bytes = inputStream.read(buffer);
+            String receivedData = new String(buffer, 0, bytes);
+
+            Log.d(TAG, "Data received: " + receivedData);
+            return receivedData;
+        } else {
+            throw new IOException("Bluetooth input stream is not available");
+        }
+    }
+
     public void close() throws IOException {
         if (bluetoothSocket != null) {
             bluetoothSocket.close();
