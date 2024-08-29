@@ -12,4 +12,12 @@ public class Command {
     public String getLabel() {
         return label;
     }
+
+    public String getPayload() {
+        return payload;
+    }
+
+    public Map<String, Parameter> getParameters() {
+        return parameters;
+    }
 }
